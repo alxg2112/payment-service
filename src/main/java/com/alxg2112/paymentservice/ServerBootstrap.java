@@ -1,11 +1,53 @@
 package com.alxg2112.paymentservice;
 
+import com.alxg2112.paymentservice.controller.ControllerVerticle;
+import com.alxg2112.paymentservice.model.domain.Account;
+import com.alxg2112.paymentservice.service.PaymentService;
+import com.alxg2112.paymentservice.service.SimpleInMemoryPaymentService;
+import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
+import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonObject;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 
 public class ServerBootstrap {
 
-  public static void main(String[] args) {
+  private static final String CONFIG_DIRECTORY = "config";
+  private static final String SERVER_CONFIG_FILE = "config.json";
+  private static final String ACCOUNTS_DATA_FILE = "accounts-data.json";
+
+  public static void main(String[] args) throws Exception {
+    JsonObject serverConfig = new JsonObject(getConfigFileContent(SERVER_CONFIG_FILE));
+
+    String accountsDataRaw = getConfigFileContent(ACCOUNTS_DATA_FILE);
+    List<Account> accounts = Arrays
+        .asList(Json.decodeValue(accountsDataRaw, Account[].class));
+    PaymentService paymentService = new SimpleInMemoryPaymentService(accounts);
+
     Vertx vertx = Vertx.vertx();
-    vertx.deployVerticle(new PaymentServiceVerticle());
+    vertx.deployVerticle(new ControllerVerticle(paymentService),
+        new DeploymentOptions().setConfig(serverConfig));
+  }
+
+  private static String getConfigFileContent(String configFile)
+      throws IOException, URISyntaxException {
+    Path configDefaultPath = Path.of(
+        ServerBootstrap.class.getClassLoader()
+            .getResource(configFile)
+            .toURI());
+    Path configOverridePath =
+        Paths.get(CONFIG_DIRECTORY + File.separator + configFile);
+    Path configPath = Files.exists(configOverridePath)
+        ? configOverridePath
+        : configDefaultPath;
+
+    return Files.readString(configPath);
   }
 }

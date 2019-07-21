@@ -1,0 +1,413 @@
+{
+	"info": {
+		"_postman_id": "e1e1aee9-092b-43ff-8206-f7fdca378f72",
+		"name": "Payments Service API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All Accounts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cc40fccf-1f8c-4c21-928c-2d9a957d7148",
+						"exec": [
+							"pm.test(\"All accounts are retrieved\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.length == 3).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Submit Payment 'b360b1c1-2db2-4712-8365-b7ebfd398282' -> '12cab280-b6ba-4159-8731-7d3a35318de9'",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ddcab318-babc-4498-abe2-e7c8d11613ec",
+						"exec": [
+							"pm.test(\"Payment is processed succesfully\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"payerAccountId\" : \"b360b1c1-2db2-4712-8365-b7ebfd398282\",\n\t\"payeeAccountId\": \"12cab280-b6ba-4159-8731-7d3a35318de9\",\n\t\"amount\": \"10.0\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/payments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"payments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Account 'b360b1c1-2db2-4712-8365-b7ebfd398282'",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8339851f-0d92-4871-9b12-c91c0cff1766",
+						"exec": [
+							"pm.test(\"Account is updated properly\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.text()).to.include(\"90.0\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/accounts/b360b1c1-2db2-4712-8365-b7ebfd398282",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"accounts",
+						"b360b1c1-2db2-4712-8365-b7ebfd398282"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Submit Payment '12cab280-b6ba-4159-8731-7d3a35318de9' -> '4510b789-145e-41a9-a433-408d212320e9'",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ddcab318-babc-4498-abe2-e7c8d11613ec",
+						"exec": [
+							"pm.test(\"Payment is processed succesfully\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"payerAccountId\" : \"12cab280-b6ba-4159-8731-7d3a35318de9\",\n\t\"payeeAccountId\": \"4510b789-145e-41a9-a433-408d212320e9\",\n\t\"amount\": \"10.0\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/payments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"payments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Account '12cab280-b6ba-4159-8731-7d3a35318de9'",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8339851f-0d92-4871-9b12-c91c0cff1766",
+						"exec": [
+							"pm.test(\"Account is updated properly\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.text()).to.include(\"500.0\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/accounts/12cab280-b6ba-4159-8731-7d3a35318de9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"accounts",
+						"12cab280-b6ba-4159-8731-7d3a35318de9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Account '4510b789-145e-41a9-a433-408d212320e9'",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8339851f-0d92-4871-9b12-c91c0cff1766",
+						"exec": [
+							"pm.test(\"Account is updated properly\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.expect(pm.response.text()).to.include(\"1010.0\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/accounts/4510b789-145e-41a9-a433-408d212320e9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"accounts",
+						"4510b789-145e-41a9-a433-408d212320e9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Not Existing Account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8339851f-0d92-4871-9b12-c91c0cff1766",
+						"exec": [
+							"pm.test(\"Account is updated properly\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/accounts/b4cf88dd-300c-4851-8caf-be9ec1aadae9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"accounts",
+						"b4cf88dd-300c-4851-8caf-be9ec1aadae9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Submit Payment With Unexisting Payer Account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ddcab318-babc-4498-abe2-e7c8d11613ec",
+						"exec": [
+							"pm.test(\"Payment is processed succesfully\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"payerAccountId\" : \"b4cf88dd-300c-4851-8caf-be9ec1aadae9\",\n\t\"payeeAccountId\": \"4510b789-145e-41a9-a433-408d212320e9\",\n\t\"amount\": \"10.0\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/payments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"payments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Submit Payment To Self",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ddcab318-babc-4498-abe2-e7c8d11613ec",
+						"exec": [
+							"pm.test(\"Payment is processed succesfully\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"payerAccountId\" : \"12cab280-b6ba-4159-8731-7d3a35318de9\",\n\t\"payeeAccountId\": \"12cab280-b6ba-4159-8731-7d3a35318de9\",\n\t\"amount\": \"10.0\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/payments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"payments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Submit Payment With Negative Amount",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ddcab318-babc-4498-abe2-e7c8d11613ec",
+						"exec": [
+							"pm.test(\"Payment is processed succesfully\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"payerAccountId\" : \"12cab280-b6ba-4159-8731-7d3a35318de9\",\n\t\"payeeAccountId\": \"4510b789-145e-41a9-a433-408d212320e9\",\n\t\"amount\": \"-10.0\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/payments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"payments"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

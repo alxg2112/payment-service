@@ -1,0 +1,14 @@
+[
+  {
+    "accountId": "b360b1c1-2db2-4712-8365-b7ebfd398282",
+    "balance": 100.0
+  },
+  {
+    "accountId": "12cab280-b6ba-4159-8731-7d3a35318de9",
+    "balance": 500.0
+  },
+  {
+    "accountId": "4510b789-145e-41a9-a433-408d212320e9",
+    "balance": 1000.0
+  }
+]
