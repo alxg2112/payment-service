@@ -12,8 +12,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +48,7 @@ public class SimpleInMemoryPaymentServiceTest {
       .add(THIRD_ACCOUNT_BALANCE);
 
   private static final BigDecimal PAYMENT_AMOUNT = BigDecimal.ONE;
-  private static final int NUMBER_OF_CONCURRENT_PAYMENTS = 10000;
+  private static final int NUMBER_OF_PAYMENTS = 10000;
 
   private PaymentService sut;
 
@@ -59,8 +62,8 @@ public class SimpleInMemoryPaymentServiceTest {
     ExecutorService executorService = Executors
         .newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-    IntStream.range(0, NUMBER_OF_CONCURRENT_PAYMENTS)
-        .forEach(num -> {
+    List<Future> futures = IntStream.range(0, NUMBER_OF_PAYMENTS)
+        .mapToObj(num -> {
           List<String> accountIds = new ArrayList<>(ALL_ACCOUNT_IDS);
           Collections.shuffle(accountIds);
           String payerAccountId = accountIds.get(0);
@@ -70,11 +73,21 @@ public class SimpleInMemoryPaymentServiceTest {
               .payeeAccountId(payeeAccountId)
               .amount(PAYMENT_AMOUNT)
               .build();
-          executorService.submit(() -> {
+          return executorService.submit(() -> {
             sut.processPayment(payment);
             return null;
           });
-        });
+        }).collect(Collectors.toList());
+
+    futures.forEach(future -> {
+      try {
+        future.get();
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+      } catch (ExecutionException e) {
+        e.printStackTrace();
+      }
+    });
 
     executorService.shutdown();
 
