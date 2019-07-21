@@ -2,7 +2,7 @@
 
 * Build a fat jar using `mvn clean package` command.
 * Launch the application using `java -jar payment-service-1.0-SNAPSHOT.jar`.
-* You also can override default properties defined in `resources` by placing them into `config` subdirectory at application jar's  location.
+* You also can override default properties defined in `resources` by placing them into `config` directory within classpath.
 
 # Running API tests
 
