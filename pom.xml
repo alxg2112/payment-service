@@ -13,11 +13,11 @@
     <vertx-version>3.7.1</vertx-version>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
-    <guava-version>28.0-jre</guava-version>
     <junit-version>4.12</junit-version>
     <mockito-version>1.10.19</mockito-version>
     <assertj-version>3.12.2</assertj-version>
     <dataprovider-version>1.13.1</dataprovider-version>
+    <commons-io-version>2.6</commons-io-version>
   </properties>
 
   <dependencies>
@@ -47,9 +47,9 @@
     </dependency>
 
     <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>${guava-version}</version>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>${commons-io-version}</version>
     </dependency>
 
     <dependency>

@@ -10,12 +10,13 @@ import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import org.apache.commons.io.IOUtils;
 
 public class ServerBootstrap {
 
@@ -37,17 +38,15 @@ public class ServerBootstrap {
   }
 
   private static String getConfigFileContent(String configFile)
-      throws IOException, URISyntaxException {
-    Path configDefaultPath = Path.of(
-        ServerBootstrap.class.getClassLoader()
-            .getResource(configFile)
-            .toURI());
+      throws IOException {
     Path configOverridePath =
         Paths.get(CONFIG_DIRECTORY + File.separator + configFile);
-    Path configPath = Files.exists(configOverridePath)
-        ? configOverridePath
-        : configDefaultPath;
-
-    return Files.readString(configPath);
+    if (Files.exists(configOverridePath)) {
+      return Files.readString(configOverridePath);
+    }
+    return IOUtils.toString(ServerBootstrap.class
+            .getClassLoader()
+            .getResourceAsStream(configFile),
+        StandardCharsets.UTF_8);
   }
 }
