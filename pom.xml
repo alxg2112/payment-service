@@ -10,7 +10,7 @@
 
   <properties>
     <lombok-version>1.18.6</lombok-version>
-    <vertx-version>3.7.1</vertx-version>
+    <vertx-version>3.9.4</vertx-version>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <junit-version>4.12</junit-version>
